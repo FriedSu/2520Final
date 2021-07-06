@@ -62,7 +62,7 @@ let remindersController = {
     searchResult['title'] = title
     searchResult['description'] = description
     searchResult['completed'] = completed
-    res.render("reminder/index", { reminders: database.cindy.reminders });
+    res.render("reminder/single-reminder", { reminderItem: searchResult });
   },
 
   delete: (req, res) => {
