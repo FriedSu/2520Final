@@ -57,7 +57,6 @@ let remindersController = {
     }
 
     databaseObj = database.cindy.reminders
-    console.log(searchResult)
     index = databaseObj.indexOf(searchResult)
 
     searchResult['title'] = title
