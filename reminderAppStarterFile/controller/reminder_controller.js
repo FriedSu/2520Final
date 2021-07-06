@@ -18,7 +18,7 @@ let remindersController = {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
       res.render("reminder/index", { reminders: database.cindy.reminders });
-    }console.log(searchResult)
+    }
   },
 
   create: (req, res) => {
@@ -41,20 +41,40 @@ let remindersController = {
   },
 
   update: (req, res) => {
-    //code not implemented yet
+    let reminderToFind = req.params.id;
+    
+    let searchResult = database.cindy.reminders.find(function (reminder) {
+      return reminder.id == reminderToFind;
+    });
+
+    let title = req.body.title
+    let description = req.body.description
+    let completed = req.body.completed
+    if (req.body.completed == 'false') {
+      completed = false
+    } else {
+      completed = true
+    }
+
+    databaseObj = database.cindy.reminders
+    console.log(searchResult)
+    index = databaseObj.indexOf(searchResult)
+
+    searchResult['title'] = title
+    searchResult['description'] = description
+    searchResult['completed'] = completed
     res.render("reminder/index", { reminders: database.cindy.reminders });
   },
 
   delete: (req, res) => {
-    // testing implemented code
     let reminderToFind = req.params.id;
-    console.log(reminderToFind)
-    databaseObj = database.cindy.reminders[reminderToFind - 1]
-    singleObj = databaseObj
+    let searchResult = database.cindy.reminders.find(function (reminder) {
+      return reminder.id == reminderToFind;
+    });
+    databaseObj = database.cindy.reminders
+    index = databaseObj.indexOf(searchResult)
 
-    console.log(delete database.cindy.reminders[reminderToFind - 1])
-
-    
+    databaseObj.splice(index,1)
     res.redirect("/reminders");
   },
 };
