@@ -9,13 +9,6 @@ let authController = {
     res.render("auth/register");
   },
 
-  loginSubmit: (req, res) => {
-    // implement
-  },
-
-  registerSubmit: (req, res) => {
-    // implement
-  },
 };
 
 module.exports = authController;
