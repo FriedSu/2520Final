@@ -100,8 +100,8 @@ app.get('/auth/github/callback',
     res.redirect('/');
   });
 
-app.listen(3002, function () {
+app.listen(3003, function () {
   console.log(
-    "Server running. Visit: localhost:3002/reminders in your browser 🚀"
+    "Server running. Visit: localhost:3003/reminders in your browser 🚀"
   );
 });
