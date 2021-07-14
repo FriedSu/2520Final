@@ -23,6 +23,19 @@ app.use(
   })
 );
 
+// GITHUB ATTEMPT PART 1 (Part 2 further down)
+const GitHubStrategy = require('passport-github').Strategy;
+passport.use(new GitHubStrategy({
+    clientID: '11bb17231fada7ee9f37',
+    clientSecret: 'f258c7ebaae840f790c5afc7bcbdc330f61c8ab6',
+    callbackURL: "http://localhost:3002/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+    cb(null, profile);
+  }
+));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -63,13 +76,32 @@ app.get("/login", forwardAuthenticated, (req, res) => {
   res.render("auth/login");
 });
 
+app.get("/logout", (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.redirect("/login");
+});
+
+
+
 app.post("/login", passport.authenticate("local", {
-  successRedirect: "/templogin",
+  successRedirect: "/reminders",
   failureRedirect: "/login",
 }));
 
-app.listen(3001, function () {
+// GITHUB ATTEMPT PART 2
+app.get('/auth/github',
+  passport.authenticate('github'));
+
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+app.listen(3002, function () {
   console.log(
-    "Server running. Visit: localhost:3001/reminders in your browser 🚀"
+    "Server running. Visit: localhost:3002/reminders in your browser 🚀"
   );
 });
