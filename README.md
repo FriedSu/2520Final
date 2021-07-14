@@ -1,3 +1,5 @@
 # 2520Final
 
-Testing
+[X] Local Login
+[] Github Login
+[] Api | Unsplash
