@@ -1,5 +1,5 @@
 # 2520Final
 
-#[X] Local Login
-#[] Github Login
-#[] Api | Unsplash
+[X] Local Login\n
+[] Github Login\n
+[] Api | Unsplash\n
