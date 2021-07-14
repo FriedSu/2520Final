@@ -1,5 +1,7 @@
 # 2520Final
 
-[X] Local Login\n
-[] Github Login\n
-[] Api | Unsplash\n
+[ Completed ] - Local Login
+
+[ WIP ] - Github Login
+
+[ Not Started ] - Api | Unsplash
