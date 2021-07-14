@@ -1,7 +1,8 @@
 # 2520Final
 
-[ Completed ] - Local Login
+## To-do list
+ - Local Login `Completed `
 
-[ WIP ] - Github Login
+ - Github Login `WIP`
 
-[ Not Started ] - Api | Unsplash
+ - Api [Unsplash](https://unsplash.com/developers) `Not Started`
