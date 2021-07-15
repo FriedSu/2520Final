@@ -36,19 +36,14 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:3004/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    // console.log(profile);
     let id = Number(profile.id)
     let name = profile._json.name
     let email = profile._json.email
-    // console.log(id)
-    // console.log(name)
-    // console.log(email)
+
     let id_list = []
     for (const data of database) {
       id_list.push(data.id)
     }
-
-    // console.log(id_list)
 
     if (id_list.includes(id)) {
       // console.log(database)
@@ -59,15 +54,9 @@ passport.use(new GitHubStrategy({
         email: email,
         reminders: [],
       }
-      console.log(githubData)
       database.push(githubData)
       
     }
-
-    
-
-    // database.push(githubData)
-    
 
     cb(null, profile);
   }
@@ -80,9 +69,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
 
 app.set("view engine", "ejs");
-
-// Routes start here
-// app.post("/login", passport.authenticate("local", { successRedirect: "/reminders", failureRedirect: "/login"}))
 
 app.post("/reminder/", ensureAuthenticated, reminderController.create);
 
@@ -104,7 +90,6 @@ app.post("/reminder/delete/:id", ensureAuthenticated, reminderController.delete)
 
 // Fix this to work with passport! The registration does not need to work, you can use the fake database for this.
 // app.get("/register", authController.register); <--- DONT NEED TO CODE
-// app.get("/login", authController.login);
 
 app.get("/login", forwardAuthenticated, (req, res) => {
   res.render("auth/login");
@@ -115,8 +100,6 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/login");
 });
-
-
 
 app.post("/login", passport.authenticate("local", {
   successRedirect: "/reminders",
