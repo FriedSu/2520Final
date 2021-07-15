@@ -23,6 +23,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
     let user = userController.getUserByID(id);
+    console.log(database)
     if (user) {
         done(null, user);
     } else {

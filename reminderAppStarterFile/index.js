@@ -6,6 +6,7 @@ const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
 const { ensureAuthenticated, forwardAuthenticated } = require("./middleware/checkAuth");
+let database = require("./database");
 
 const session = require("express-session");
 
@@ -23,21 +24,54 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // GITHUB ATTEMPT PART 1 (Part 2 further down)
 const GitHubStrategy = require('passport-github').Strategy;
+const { fstat } = require("fs");
 passport.use(new GitHubStrategy({
     clientID: '11bb17231fada7ee9f37',
     clientSecret: 'f258c7ebaae840f790c5afc7bcbdc330f61c8ab6',
-    callbackURL: "http://localhost:3002/auth/github/callback"
+    callbackURL: "http://localhost:3004/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
+    // console.log(profile);
+    let id = Number(profile.id)
+    let name = profile._json.name
+    let email = profile._json.email
+    // console.log(id)
+    // console.log(name)
+    // console.log(email)
+    let id_list = []
+    for (const data of database) {
+      id_list.push(data.id)
+    }
+
+    // console.log(id_list)
+
+    if (id_list.includes(id)) {
+      // console.log(database)
+    } else {
+      githubData = {
+        id: id,
+        name: name,
+        email: email,
+        reminders: [],
+      }
+      console.log(githubData)
+      database.push(githubData)
+      
+    }
+
+    
+
+    // database.push(githubData)
+    
+
     cb(null, profile);
   }
 ));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -97,11 +131,11 @@ app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('/reminders');
   });
 
-app.listen(3003, function () {
+app.listen(3004, function () {
   console.log(
-    "Server running. Visit: localhost:3003/reminders in your browser 🚀"
+    "Server running. Visit: localhost:3004/reminders in your browser 🚀"
   );
 });
