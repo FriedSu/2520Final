@@ -5,7 +5,7 @@
 
  - Github Login `COMPLETED`
 
- - Api [Unsplash](https://unsplash.com/developers) `Not Started`
+ - Api (Example. [Unsplash](https://unsplash.com/developers)) `Not Started`
  
  ### Local Logins
  Available *local login* accounts to test the Reminder App.
