@@ -11,7 +11,7 @@
  Available *local login* accounts to test the Reminder App.
  > Each email will have one reminder
  > 
- > You will notice that the reminders have invalid images. I made it like that so you can test edit feature and add the image that corresponds with their reminder.
+ > You will notice that the reminders have invalid images. I made it like that so you can test the `Edit` feature and add the image that corresponds with their reminder.
  
  | Email | Password |
  | --- | --- |
