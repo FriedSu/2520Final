@@ -1,4 +1,5 @@
 let database = require("../database");
+const fetch = require('node-fetch');
 
 let remindersController = {
   list: (req, res) => {
@@ -22,14 +23,27 @@ let remindersController = {
   },
 
   create: (req, res) => {
-    let reminder = {
-      id: req.user.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
-    req.user.reminders.push(reminder);
-    res.redirect("/reminders");
+
+    const client_id = "5KYLCV-t8M0QIWlH81bE-QA3ZzrMZIrx_wiMo1GYNwA"
+    const query = req.body.image
+    fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${client_id}`)
+    .then(res => res.json())
+    .then(json => {
+      let randomNumber = 1
+      queryImage = json.results[randomNumber].urls.small
+
+      let reminder = {
+        id: req.user.reminders.length + 1,
+        title: req.body.title,
+        description: req.body.description,
+        completed: false,
+        image: queryImage,
+        imageName: req.body.image
+      };
+      req.user.reminders.push(reminder);
+      res.redirect("/reminders");
+    })
+    
   },
 
   edit: (req, res) => {
@@ -41,28 +55,42 @@ let remindersController = {
   },
 
   update: (req, res) => {
-    let reminderToFind = req.params.id;
+
+    const client_id = "5KYLCV-t8M0QIWlH81bE-QA3ZzrMZIrx_wiMo1GYNwA"
+    const query = req.body.image
+    fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${client_id}`)
+    .then(res => res.json())
+    .then(json => {
+      let randomNumber = 1
+      queryImage = json.results[randomNumber].urls.small
+
+      let reminderToFind = req.params.id;
     
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
+      let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+      });
+  
+      let title = req.body.title
+      let description = req.body.description
+      let completed = req.body.completed
+  
+      if (req.body.completed == 'false') {
+        completed = false
+      } else {
+        completed = true
+      }
+  
+      databaseObj = req.user.reminders
+      index = databaseObj.indexOf(searchResult)
+  
+      searchResult['title'] = title
+      searchResult['description'] = description
+      searchResult['completed'] = completed
+      searchResult['image'] = queryImage
+      searchResult['imageName'] = req.body.image
+      res.render("reminder/single-reminder", { reminderItem: searchResult });
+      
     });
-
-    let title = req.body.title
-    let description = req.body.description
-    let completed = req.body.completed
-    if (req.body.completed == 'false') {
-      completed = false
-    } else {
-      completed = true
-    }
-
-    databaseObj = req.user.reminders
-    index = databaseObj.indexOf(searchResult)
-
-    searchResult['title'] = title
-    searchResult['description'] = description
-    searchResult['completed'] = completed
-    res.render("reminder/single-reminder", { reminderItem: searchResult });
   },
 
   delete: (req, res) => {

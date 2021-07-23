@@ -12,6 +12,7 @@
       <% } else if (reminderItem.completed == false) { %>
         <span class="badge badge-danger">False</span>
       <% } %>
+      || <img class="indexImages" src=<%= reminderItem.image %>>
       <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
     </li>
   <% }) %>
