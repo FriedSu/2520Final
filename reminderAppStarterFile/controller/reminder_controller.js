@@ -1,5 +1,6 @@
 let database = require("../database");
 const fetch = require('node-fetch');
+const defaultImage = "https://images.unsplash.com/photo-1512314889357-e157c22f938d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxfDB8MXxhbGx8fHx8fHx8fA&ixlib=rb-1.2.1&q=80&w=1080&utm_source=unsplash_source&utm_medium=referral&utm_campaign=api-credit"
 
 let remindersController = {
   list: (req, res) => {
@@ -41,7 +42,20 @@ let remindersController = {
         imageName: req.body.image
       };
       req.user.reminders.push(reminder);
-      res.redirect("/reminders");
+      res.redirect("/reminders")})
+    .catch((err) => {
+      queryImage = defaultImage
+
+      let reminder = {
+        id: req.user.reminders.length + 1,
+        title: req.body.title,
+        description: req.body.description,
+        completed: false,
+        image: queryImage,
+        imageName: req.body.image
+      };
+      req.user.reminders.push(reminder);
+      res.redirect("/reminders")
     })
     
   },
@@ -90,6 +104,35 @@ let remindersController = {
       searchResult['imageName'] = req.body.image
       res.render("reminder/single-reminder", { reminderItem: searchResult });
       
+    })
+    .catch((err) => {
+      queryImage = defaultImage
+
+      let reminderToFind = req.params.id;
+    
+      let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+      });
+  
+      let title = req.body.title
+      let description = req.body.description
+      let completed = req.body.completed
+  
+      if (req.body.completed == 'false') {
+        completed = false
+      } else {
+        completed = true
+      }
+  
+      databaseObj = req.user.reminders
+      index = databaseObj.indexOf(searchResult)
+  
+      searchResult['title'] = title
+      searchResult['description'] = description
+      searchResult['completed'] = completed
+      searchResult['image'] = queryImage
+      searchResult['imageName'] = req.body.image
+      res.render("reminder/single-reminder", { reminderItem: searchResult });
     });
   },
 
